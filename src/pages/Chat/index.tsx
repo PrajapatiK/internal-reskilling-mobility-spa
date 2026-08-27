@@ -9,10 +9,8 @@ import {
 } from 'react-router'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import apiClient from '../../services/api/apiClient'
 import '../../components/Markdown/MarkdownContent.css'
-
-const API_BASE =
-	'https://df21-2401-4900-8821-5ebb-b4a7-3355-d29d-625.ngrok-free.app/api'
 
 interface Thread {
 	thread_id: string
@@ -30,7 +28,6 @@ interface LocationState {
 }
 
 const apiHeaders: Record<string, string> = {
-	Accept: 'application/json',
 	'ngrok-skip-browser-warning': '1',
 }
 
@@ -143,29 +140,14 @@ const ChatPage = () => {
 			try {
 				setLoadingThreads(true)
 
-				const url =
-					`${API_BASE}/threads` +
-					`?user_id=${encodeURIComponent(
-						username
-					)}`
-
-				console.log(
-					'Fetching threads:',
-					url
-				)
-
-				const response =
-					await fetch(url, {
+				const response = await apiClient(
+					`/threads?user_id=${encodeURIComponent(username)}`,
+					{
 						method: 'GET',
 						headers: apiHeaders,
 						signal: controller.signal,
-					})
-
-				if (!response.ok) {
-					throw new Error(
-						`Failed to fetch threads: ${response.status}`
-					)
-				}
+					}
+				)
 
 				const data: Thread[] =
 					await response.json()
@@ -250,30 +232,14 @@ const ChatPage = () => {
 			try {
 				setLoadingMessages(true)
 
-				const url =
-					`${API_BASE}/threads/` +
-					`${encodeURIComponent(
-						selectedThread
-					)}` +
-					`/messages`
-
-				console.log(
-					'Fetching messages:',
-					url
-				)
-
-				const response =
-					await fetch(url, {
+				const response = await apiClient(
+					`/threads/${encodeURIComponent(selectedThread)}/messages`,
+					{
 						method: 'GET',
 						headers: apiHeaders,
 						signal: controller.signal,
-					})
-
-				if (!response.ok) {
-					throw new Error(
-						`Failed to fetch messages: ${response.status}`
-					)
-				}
+					}
+				)
 
 				const payload =
 					await response.json()
@@ -569,8 +535,7 @@ const ChatPage = () => {
 
 		try {
 			const url =
-				`${API_BASE}/chat` +
-				`?user_id=${encodeURIComponent(
+				`/chat?user_id=${encodeURIComponent(
 					currentUsername
 				)}` +
 				`&thread_id=${encodeURIComponent(
@@ -586,7 +551,7 @@ const ChatPage = () => {
 			)
 
 			const response =
-				await fetch(url, {
+				await apiClient(url, {
 					method: 'POST',
 					headers: {
 						...apiHeaders,
@@ -595,6 +560,7 @@ const ChatPage = () => {
 					},
 					signal:
 						controller.signal,
+					body: '',
 				})
 
 			console.log(

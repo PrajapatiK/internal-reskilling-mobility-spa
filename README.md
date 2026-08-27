@@ -297,17 +297,13 @@ internal-mobility-spa/
 
 ## Environment Variable
 
-Add the backend API URL:
+Add the backend API URL in the root `.env` file:
 
 ```env
-VITE_API_BASE_URL=https://your-api-domain.com/api
+VITE_API_BASE_URL=https://url/api
 ```
 
-For example, when using the current development Ngrok API:
-
-```env
-VITE_API_BASE_URL=https://df21-2401-4900-8821-5ebb-b4a7-3355-d29d-625.ngrok-free.app/api
-```
+This is the current local development value used by the app and should match the backend URL exposed by your API.
 
 ---
 
@@ -338,8 +334,10 @@ This allows the same application to work with different environments.
 Complete `.env` example:
 
 ```env
-VITE_API_BASE_URL=https://df21-2401-4900-8821-5ebb-b4a7-3355-d29d-625.ngrok-free.app/api
+VITE_API_BASE_URL=https://url/api
 ```
+
+This matches the application’s current `.env` file configuration.
 
 ---
 

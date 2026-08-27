@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import apiClient from '../../services/api/apiClient'
 
-const API_BASE =
-  'https://df21-2401-4900-8821-5ebb-b4a7-3355-d29d-625.ngrok-free.app/api'
+// const API_BASE =
+//   'https://df21-2401-4900-8821-5ebb-b4a7-3355-d29d-625.ngrok-free.app/api'
 const HomePage = () => {
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(false)
@@ -15,20 +16,9 @@ const handleNext = async () => {
   setLoading(true)
 
   try {
-    const res = await fetch(
-      `${API_BASE}/threads?user_id=${encodeURIComponent(user)}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'ngrok-skip-browser-warning': '1',
-        },
-      }
+    const res = await apiClient(
+      `/threads?user_id=${encodeURIComponent(user)}`
     )
-
-    if (!res.ok) {
-      throw new Error(`HTTP error: ${res.status}`)
-    }
 
     const threads = await res.json()
 
