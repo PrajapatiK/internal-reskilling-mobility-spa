@@ -1,4 +1,4 @@
-import MarkdownContent from '../../components/MarkdownContent'
+import MarkdownContent from '../../components/Markdown/MarkdownContent'
 
 const MarkdownContainer = () => {
   return (
